@@ -369,3 +369,390 @@ When exam says:
 “Horizontal scaling” → Stateless + Auto Scaling
 
 Memorize these mappings. They repeat constantly.
+
+
+21. High Read Traffic on Database
+
+Scenario:
+An ecommerce app experiences heavy read traffic on its RDS MySQL database. Write traffic is moderate.
+
+Question: Which solution improves performance MOST efficiently?
+
+A. Increase instance size
+B. Add RDS Read Replicas
+C. Enable Multi-AZ
+D. Move to EC2 database
+
+Answer: ✅ B
+
+Explanation:
+Read Replicas scale read workloads. Multi-AZ is for HA, not performance scaling. Vertical scaling (A) is limited and costly.
+
+22. Global Static Content Performance
+
+Scenario:
+A media company serves static content globally from S3. Users report high latency internationally.
+
+Question: Most performant solution?
+
+A. Increase S3 storage class
+B. Use CloudFront distribution
+C. Use EBS instead
+D. Move S3 to single region only
+
+Answer: ✅ B
+
+Explanation:
+CloudFront caches content at edge locations worldwide, reducing latency. Storage class doesn’t affect global performance.
+
+23. DynamoDB Read Latency
+
+Scenario:
+A mobile app using DynamoDB experiences high read latency during peak hours.
+
+Question: What improves performance MOST?
+
+A. Increase RCU
+B. Add DynamoDB DAX
+C. Enable Multi-AZ
+D. Use EBS
+
+Answer: ✅ B
+
+Explanation:
+DAX provides in-memory caching for microsecond latency reads. Increasing RCU helps throughput but not cache-level latency improvements.
+
+24. High Write Throughput in DynamoDB
+
+Scenario:
+A gaming leaderboard requires extremely high write throughput.
+
+Question: Best configuration?
+
+A. On-demand capacity mode
+B. Provisioned capacity with auto scaling
+C. Store data in S3
+D. Use EFS
+
+Answer: ✅ B
+
+Explanation:
+Provisioned with auto scaling ensures predictable high throughput. On-demand is flexible but can be costly and less optimized for sustained heavy load.
+
+25. Reduce Database Load
+
+Scenario:
+A frequently accessed product catalog rarely changes.
+
+Question: Most performant solution?
+
+A. Increase DB size
+B. Add ElastiCache Redis
+C. Use Multi-AZ
+D. Snapshot database
+
+Answer: ✅ B
+
+Explanation:
+ElastiCache offloads read pressure from DB, significantly improving response times. Multi-AZ doesn’t reduce load.
+
+26. Large File Upload Performance
+
+Scenario:
+Users globally upload large files to S3.
+
+Question: Best way to improve upload performance?
+
+A. Enable S3 Transfer Acceleration
+B. Use Glacier
+C. Move to EBS
+D. Reduce file size manually
+
+Answer: ✅ A
+
+Explanation:
+Transfer Acceleration uses CloudFront edge network to speed up uploads globally. Glacier is archival only.
+
+27. Auto Scaling Based on Demand
+
+Scenario:
+Traffic spikes unpredictably during promotions.
+
+Question: Best scaling policy?
+
+A. Scheduled scaling only
+B. Target tracking scaling policy
+C. Manual scaling
+D. Increase instance size permanently
+
+Answer: ✅ B
+
+Explanation:
+Target tracking automatically adjusts capacity based on metrics like CPU utilization. Scheduled scaling won’t handle unpredictable spikes.
+
+28. High IOPS Requirement
+
+Scenario:
+A financial app requires extremely high IOPS for database storage.
+
+Question: Best storage option?
+
+A. General Purpose gp2
+B. Provisioned IOPS SSD (io2)
+C. S3 Standard
+D. EFS
+
+Answer: ✅ B
+
+Explanation:
+Provisioned IOPS SSD (io2) delivers consistent high IOPS performance. gp2 cannot guarantee high consistent throughput.
+
+29. Global API Performance
+
+Scenario:
+An API hosted behind ALB in us-east-1 serves global users.
+
+Question: Best way to reduce global latency?
+
+A. Route 53 latency routing only
+B. Deploy in single region
+C. Use CloudFront in front of ALB
+D. Increase EC2 size
+
+Answer: ✅ C
+
+Explanation:
+CloudFront reduces latency by caching at edge and optimizing TCP connections. Larger instances don’t reduce network distance latency.
+
+30. S3 Request Performance Optimization
+
+Scenario:
+An analytics company stores millions of objects in a single S3 bucket and experiences request throttling.
+
+Question: Best solution?
+
+A. Use random object key prefixes
+B. Reduce object count
+C. Change storage class
+D. Move to EBS
+
+Answer: ✅ A
+
+Explanation:
+S3 scales automatically but spreading requests across prefixes improves parallelism. Storage class doesn’t affect request scaling.
+
+🎯 Performance Exam Patterns
+
+If question says:
+
+“Reduce read latency” → DAX / ElastiCache
+
+“Global performance” → CloudFront
+
+“High IOPS” → io2
+
+“Scale reads in RDS” → Read Replicas
+
+“Upload faster globally” → Transfer Acceleration
+
+These appear again and again.
+
+Reply “Next 10” and we’ll move into:
+
+💰 Cost-Optimized Architectures (Spot, Savings Plans, Storage classes, lifecycle policies — very exam heavy).
+
+Next 10
+
+Good. 🔥 Now we move into Design Cost-Optimized Architectures (very scoring domain if you know the patterns).
+
+Exam trick:
+If the question says “most cost-effective” → eliminate high-availability overkill, eliminate overprovisioning, think lifecycle, Spot, Savings Plans.
+
+✅ SAA-C03 High-Yield Questions (31–40)
+31. Steady-State Compute Workload
+
+Scenario:
+A company runs predictable EC2 workloads 24/7 for the next 3 years.
+
+Question: Most cost-effective option?
+
+A. On-Demand Instances
+B. Spot Instances
+C. Compute Savings Plan
+D. Dedicated Hosts
+
+Answer: ✅ C
+
+Explanation:
+Savings Plans provide major discounts for predictable long-term workloads. Spot is interruptible. On-Demand is most expensive long term.
+
+32. Batch Processing Jobs
+
+Scenario:
+A company runs nightly batch processing that can tolerate interruptions.
+
+Question: Most cost-efficient solution?
+
+A. On-Demand
+B. Reserved Instances
+C. Spot Instances
+D. Dedicated Instances
+
+Answer: ✅ C
+
+Explanation:
+Spot Instances are ideal for fault-tolerant workloads. They offer up to 90% discount. Reserved is better for steady workloads.
+
+33. S3 Data Access Pattern Change
+
+Scenario:
+Application data is accessed frequently for 30 days, then rarely.
+
+Question: Most cost-optimized solution?
+
+A. Keep in S3 Standard
+B. Move manually
+C. S3 Lifecycle rule to Standard-IA
+D. Use EBS
+
+Answer: ✅ C
+
+Explanation:
+Lifecycle policies automatically transition objects to cheaper tiers. Manual processes are error-prone.
+
+34. Archival Data (Compliance)
+
+Scenario:
+Data must be retained for 7 years for compliance but rarely accessed.
+
+Question: Most cost-effective storage?
+
+A. S3 Standard
+B. S3 Glacier Deep Archive
+C. EFS
+D. gp3 EBS
+
+Answer: ✅ B
+
+Explanation:
+Glacier Deep Archive is lowest-cost storage for long-term retention. Other options are significantly more expensive.
+
+35. Dev/Test Environment
+
+Scenario:
+Developers use EC2 during office hours only.
+
+Question: Most cost-effective solution?
+
+A. Run 24/7
+B. Stop/start instances with automation
+C. Use Dedicated Hosts
+D. Use larger instance
+
+Answer: ✅ B
+
+Explanation:
+Stopping instances when not needed saves compute charges. Dedicated hosts increase cost.
+
+36. Underutilized EC2 Instances
+
+Scenario:
+CloudWatch shows CPU consistently below 10%.
+
+Question: Best cost optimization?
+
+A. Terminate all
+B. Right-size instances
+C. Increase instance size
+D. Enable Multi-AZ
+
+Answer: ✅ B
+
+Explanation:
+Rightsizing reduces cost while maintaining performance. Increasing size worsens waste.
+
+37. Mixed Workload with Baseline Usage
+
+Scenario:
+A startup has baseline EC2 usage plus unpredictable spikes.
+
+Question: Most cost-effective strategy?
+
+A. All On-Demand
+B. All Reserved
+C. Savings Plan for baseline + Spot for spikes
+D. Dedicated Hosts
+
+Answer: ✅ C
+
+Explanation:
+Combine Savings Plans for steady load and Spot for variable load. This hybrid approach maximizes savings.
+
+38. S3 Small Objects Retrieval Pattern Unknown
+
+Scenario:
+A company doesn’t know future access patterns of stored objects.
+
+Question: Best cost-optimized storage class?
+
+A. S3 Standard
+B. S3 Intelligent-Tiering
+C. Glacier
+D. EBS
+
+Answer: ✅ B
+
+Explanation:
+Intelligent-Tiering automatically moves objects between tiers based on usage without performance impact.
+
+39. RDS Cost Reduction
+
+Scenario:
+A production RDS instance is underutilized during nights.
+
+Question: Most cost-effective approach?
+
+A. Delete database nightly
+B. Switch to smaller instance
+C. Move to Multi-AZ
+D. Increase storage
+
+Answer: ✅ B
+
+Explanation:
+Rightsizing reduces cost without affecting availability. You cannot stop production RDS like EC2.
+
+40. Data Transfer Cost Optimization
+
+Scenario:
+Large data transfer costs between EC2 and S3 in same region.
+
+Question: Most cost-effective architecture?
+
+A. Use NAT Gateway
+B. Use VPC Gateway Endpoint for S3
+C. Use Internet Gateway
+D. Use Elastic IP
+
+Answer: ✅ B
+
+Explanation:
+VPC Gateway Endpoints allow private connection to S3 without internet and reduce data transfer charges.
+
+🎯 Cost Optimization Exam Patterns
+
+If exam says:
+
+“7 years retention” → Glacier Deep Archive
+
+“Unpredictable access” → Intelligent-Tiering
+
+“Interruptible workload” → Spot
+
+“Predictable 1–3 years” → Savings Plan
+
+“Private access to S3” → VPC Endpoint
+
+Memorize these mapping rules.
+
+
