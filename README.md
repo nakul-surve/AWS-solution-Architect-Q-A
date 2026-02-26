@@ -184,3 +184,188 @@ This thinking pattern alone gives you +8–10 marks.
 
 Reply with “Next 10” and we’ll move into:
 Resilient Architectures + some tricky high-availability traps.
+
+
+11. Multi-AZ High Availability (RDS)
+
+Scenario:
+An ecommerce application uses Amazon RDS. The company requires automatic failover if the primary DB instance fails.
+
+Question: Which solution is MOST resilient?
+
+A. Create Read Replica in same AZ
+B. Enable Multi-AZ deployment
+C. Daily manual backups
+D. Snapshot every hour
+
+Answer: ✅ B
+
+Explanation:
+Multi-AZ provides synchronous replication and automatic failover. Read replicas are for scaling reads, not HA. Snapshots and backups do not provide automatic failover.
+
+12. EC2 Auto Scaling Failure Recovery
+
+Scenario:
+An application runs on EC2 behind an Application Load Balancer. Instances sometimes fail health checks.
+
+Question: What ensures automatic replacement?
+
+A. CloudWatch alarm only
+B. Auto Scaling Group with health checks
+C. Increase instance size
+D. Manual restart
+
+Answer: ✅ B
+
+Explanation:
+Auto Scaling Groups detect unhealthy instances and replace them automatically. CloudWatch alone does not replace instances.
+
+13. Cross-Region Disaster Recovery
+
+Scenario:
+A company needs a disaster recovery setup with minimal cost. RTO can be several hours.
+
+Question: Best strategy?
+
+A. Multi-site active-active
+B. Warm standby
+C. Backup & Restore
+D. Pilot light
+
+Answer: ✅ C
+
+Explanation:
+Backup & Restore is lowest cost and acceptable when RTO is hours. Warm standby and pilot light are faster but cost more.
+
+14. Route 53 Failover Routing
+
+Scenario:
+A primary web server is in us-east-1. A secondary server in us-west-2 must take over if primary fails.
+
+Question: Which Route 53 routing policy?
+
+A. Weighted
+B. Latency
+C. Failover
+D. Simple
+
+Answer: ✅ C
+
+Explanation:
+Failover routing uses health checks to redirect traffic when primary fails. Weighted and latency are not failover mechanisms.
+
+15. Stateless Application Design
+
+Scenario:
+A company wants to scale web servers horizontally.
+
+Question: What design supports resilience?
+
+A. Store sessions locally on EC2
+B. Store sessions in ElastiCache
+C. Single large EC2 instance
+D. Store sessions in instance memory
+
+Answer: ✅ B
+
+Explanation:
+Externalizing session storage (ElastiCache) allows stateless scaling. Local storage prevents failover and scaling.
+
+16. S3 Cross-Region Replication
+
+Scenario:
+Critical compliance data must be stored in two AWS Regions automatically.
+
+Question: Best solution?
+
+A. Manual copy
+B. S3 Cross-Region Replication
+C. Snapshot EC2
+D. Lifecycle rule only
+
+Answer: ✅ B
+
+Explanation:
+CRR automatically replicates objects across Regions. Lifecycle policies don’t replicate.
+
+17. Application Tier Isolation
+
+Scenario:
+A 3-tier app must remain available even if one AZ fails.
+
+Question: Best architecture?
+
+A. All tiers in one AZ
+B. Web tier multi-AZ only
+C. Deploy all tiers across multiple AZs
+D. Single large server
+
+Answer: ✅ C
+
+Explanation:
+True resilience requires multi-AZ for every tier. Single-AZ deployment creates single point of failure.
+
+18. DynamoDB High Availability
+
+Scenario:
+A gaming app uses DynamoDB and must survive Region failure.
+
+Question: Which feature ensures resilience?
+
+A. DynamoDB DAX
+B. Global Tables
+C. Read replicas
+D. EBS snapshot
+
+Answer: ✅ B
+
+Explanation:
+DynamoDB Global Tables replicate across Regions for active-active resilience. DAX is caching only.
+
+19. ELB Health Checks
+
+Scenario:
+Users complain that failed EC2 instances still receive traffic.
+
+Question: What should be configured?
+
+A. Route table updates
+B. ELB health checks properly configured
+C. IAM roles
+D. Larger instance size
+
+Answer: ✅ B
+
+Explanation:
+Load balancers route traffic only to healthy targets. Misconfigured health checks cause unhealthy instances to still receive traffic.
+
+20. EFS Resilience
+
+Scenario:
+Multiple EC2 instances across AZs need shared file storage.
+
+Question: Which service provides resilient shared storage?
+
+A. EBS
+B. Instance store
+C. EFS
+D. S3 One Zone
+
+Answer: ✅ C
+
+Explanation:
+EFS is multi-AZ and designed for shared access. EBS is AZ-specific. Instance store is ephemeral.
+
+🎯 Exam Trap Patterns (Very Important)
+
+When exam says:
+
+“Automatic failover” → Multi-AZ
+
+“Low cost DR” → Backup & Restore
+
+“Cross-region active-active” → Global Tables
+
+“Horizontal scaling” → Stateless + Auto Scaling
+
+Memorize these mappings. They repeat constantly.
